@@ -1,0 +1,11 @@
+.MuiAppBar-root {
+  transition: all 0.3s ease-in-out;
+  
+  .MuiToolbar-root {
+    .MuiButton-root {
+      font-weight: 500;
+      text-transform: none;
+      font-size: 1rem;
+    }
+  }
+}
