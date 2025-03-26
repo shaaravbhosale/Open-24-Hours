@@ -7,7 +7,8 @@ import {
   TextField,
   Button,
   IconButton,
-  InputAdornment
+  InputAdornment,
+  Alert
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import './login.scss';
@@ -18,6 +19,8 @@ const Login = () => {
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -26,9 +29,35 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    setIsLoading(true);
+    setMessage('');
+
+    try {
+      const response = await fetch('http://localhost:5000/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        }),
+      });
+
+      const data = await response.json();
+      setMessage(data.message);
+      
+      if (response.ok) {
+        setFormData({ email: '', password: '' });
+      }
+    } catch (error) {
+      setMessage('Error connecting to server');
+      console.error('Login error:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleTogglePassword = () => {
@@ -42,7 +71,7 @@ const Login = () => {
         display: 'flex',
         alignItems: 'center',
         background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
-        pt: 8 // To account for the fixed navbar
+        pt: 8
       }}
     >
       <Container maxWidth="sm">
@@ -107,10 +136,19 @@ const Login = () => {
               }}
             />
 
+            {message && (
+              <Box sx={{ mb: 2 }}>
+                <Alert severity={message.includes('successful') ? 'success' : 'error'}>
+                  {message}
+                </Alert>
+              </Box>
+            )}
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
+              disabled={isLoading}
               sx={{
                 py: 1.5,
                 borderRadius: '30px',
@@ -123,7 +161,7 @@ const Login = () => {
                 }
               }}
             >
-              Login
+              {isLoading ? 'Logging in...' : 'Login'}
             </Button>
           </form>
 
