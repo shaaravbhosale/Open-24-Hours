@@ -1,8 +1,11 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, Container } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
 import './navbar.scss';
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
   return (
     <AppBar 
       position="fixed" 
@@ -16,7 +19,8 @@ const Navbar = () => {
         <Toolbar sx={{ py: 1 }}>
           <Typography 
             variant="h5" 
-            component="div" 
+            component={Link}
+            to="/"
             sx={{ 
               flexGrow: 1,
               fontWeight: 700,
@@ -24,6 +28,7 @@ const Navbar = () => {
               backgroundClip: 'text',
               WebkitBackgroundClip: 'text',
               color: 'transparent',
+              textDecoration: 'none',
             }}
           >
             Open 24 Hours
@@ -50,6 +55,7 @@ const Navbar = () => {
           </Button>
           <Button 
             color="primary"
+            onClick={() => navigate('/login')}
             sx={{ 
               mx: 1,
               color: '#2C3E50',
@@ -59,6 +65,7 @@ const Navbar = () => {
             Login
           </Button>
           <Button 
+            onClick={() => navigate('/signup')}
             variant="contained"
             sx={{
               ml: 2,
