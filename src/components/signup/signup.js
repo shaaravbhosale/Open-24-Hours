@@ -8,7 +8,8 @@ import {
   Button,
   IconButton,
   InputAdornment,
-  Grid
+  Grid,
+  Alert
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
@@ -24,6 +25,8 @@ const Signup = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -32,9 +35,51 @@ const Signup = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    
+    // Password confirmation check
+    if (formData.password !== formData.confirmPassword) {
+      setMessage('Passwords do not match');
+      return;
+    }
+
+    setIsLoading(true);
+    setMessage('');
+
+    try {
+      const response = await fetch('http://localhost:5000/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          password: formData.password
+        }),
+      });
+
+      const data = await response.json();
+      setMessage(data.message);
+      
+      if (response.ok) {
+        // Clear form on successful signup
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          password: '',
+          confirmPassword: ''
+        });
+      }
+    } catch (error) {
+      setMessage('Error connecting to server');
+      console.error('Signup error:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleTogglePassword = (field) => {
@@ -166,10 +211,19 @@ const Signup = () => {
               </Grid>
             </Grid>
 
+            {message && (
+              <Box sx={{ mt: 2, mb: 2 }}>
+                <Alert severity={message.includes('successful') ? 'success' : 'error'}>
+                  {message}
+                </Alert>
+              </Box>
+            )}
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
+              disabled={isLoading}
               sx={{
                 mt: 4,
                 py: 1.5,
@@ -183,7 +237,7 @@ const Signup = () => {
                 }
               }}
             >
-              Sign Up
+              {isLoading ? 'Creating Account...' : 'Sign Up'}
             </Button>
           </form>
 
