@@ -1,0 +1,15 @@
+POST http://localhost:8080/person/save
+Content-Type: application/json
+
+{
+  "firstname": "geddy",
+  "lastname": "less",
+  "email": "geddylee@rush.com",
+  "password": "notsecure",
+  "tutor": true
+}
+
+###
+### GET request to example server
+GET http://localhost:8080/person/allpeople
+

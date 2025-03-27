@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/open24
+    username: postgres
+    password: postgres
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 10
+      pool-name: open24-hikari-pool
+      connection-timeout: 10000
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: false
+    generate-ddl: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+        default_batch_fetch_size: 1000
+        format_sql: false
+        show_sql: false
+        jdbc:
+          batch_size: 1000
+          batch_versioned_data: true
+        use_sql_comments: false
+        order_updates: true
+        order_inserts: true
+        generate_statistics: false
+
