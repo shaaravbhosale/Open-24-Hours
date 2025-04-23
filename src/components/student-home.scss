@@ -1,0 +1,42 @@
+.student-home {
+    .MuiCard-root {
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    }
+    
+    .MuiPaper-root {
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    }
+    
+    .action-button {
+      transition: transform 0.2s ease;
+      
+      &:hover {
+        transform: translateY(-4px);
+      }
+    }
+    
+    .session-item {
+      transition: background-color 0.2s ease;
+      
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.01);
+      }
+    }
+    
+    .status-chip {
+      &.confirmed {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+      }
+      
+      &.pending {
+        background-color: #fff8e1;
+        color: #ff8f00;
+      }
+      
+      &.cancelled {
+        background-color: #ffebee;
+        color: #c62828;
+      }
+    }
+}
