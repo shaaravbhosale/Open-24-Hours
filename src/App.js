@@ -7,6 +7,11 @@ import Hero from './components/hero/hero';
 import Features from './components/features/features';
 import Login from './components/login/login';
 import Signup from './components/signup/signup';
+import { AuthProvider } from './context/AuthContext';
+import TutorDashboard from './components/tutor-dashboard/tutor-dashboard';
+import StudentDashboard from './components/student-dashboard/student-dashboard';
+import StudentHome from './components/student-home';
+import TutorHome from './components/tutor-home';
 
 const theme = createTheme({
   palette: {
@@ -28,19 +33,20 @@ const Home = () => (
 
 function App() {
   return (
-    <Router>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <div className="App">
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-          </Routes>
-        </div>
-      </ThemeProvider>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Navbar />
+        <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/student-home" element={<StudentHome />} />
+        <Route path="/tutor-home" element={<TutorHome />} />
+        <Route path="/tutor-dashboard" element={<TutorDashboard />} />
+        <Route path="/student-dashboard" element={<StudentDashboard />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

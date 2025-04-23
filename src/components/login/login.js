@@ -11,9 +11,11 @@ import {
   Alert
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useNavigate, Link } from 'react-router-dom';
 import './login.scss';
 
 const Login = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -33,7 +35,7 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     setMessage('');
-
+  
     try {
       const response = await fetch('http://localhost:5000/api/login', {
         method: 'POST',
@@ -45,12 +47,24 @@ const Login = () => {
           password: formData.password
         }),
       });
-
+  
       const data = await response.json();
-      setMessage(data.message);
       
       if (response.ok) {
-        setFormData({ email: '', password: '' });
+        // Store user data in localStorage
+        localStorage.setItem('user', JSON.stringify(data.user));
+        
+        // Dispatch custom event for navbar and other components to detect
+        window.dispatchEvent(new Event('userLogin'));
+        
+        // Redirect based on role
+        if (data.user.role === 'tutor') {
+          navigate('/tutor-dashboard');  // Make sure this path matches your route configuration
+        } else {
+          navigate('/student-dashboard');  // Make sure this path matches your route configuration
+        }
+      } else {
+        setMessage(data.message);
       }
     } catch (error) {
       setMessage('Error connecting to server');
@@ -169,6 +183,8 @@ const Login = () => {
             <Typography color="text.secondary">
               Don't have an account?{' '}
               <Button 
+                component={Link}
+                to="/signup"
                 color="primary"
                 sx={{ 
                   textTransform: 'none',

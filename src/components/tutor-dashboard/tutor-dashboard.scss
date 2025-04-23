@@ -1,0 +1,57 @@
+.tutor-dashboard {
+    background-color: #f5f7fa;
+    
+    .MuiPaper-root {
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    }
+    
+    .MuiAvatar-root {
+      font-weight: 600;
+    }
+    
+    .MuiChip-root {
+      font-weight: 500;
+    }
+    
+    .data-card {
+      transition: transform 0.2s ease-in-out;
+      
+      &:hover {
+        transform: translateY(-4px);
+      }
+    }
+    
+    .status-pill {
+      &.pending {
+        background-color: #fff8e1;
+        color: #f57c00;
+      }
+      
+      &.confirmed {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+      }
+      
+      &.cancelled {
+        background-color: #ffebee;
+        color: #c62828;
+      }
+    }
+
+    .MuiTabs-indicator {
+      height: 3px;
+      border-radius: 3px;
+    }
+
+    .MuiTableRow-root.highlight {
+      background-color: rgba(33, 150, 243, 0.08);
+    }
+    
+    // Form elements
+    .form-section {
+      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+  }

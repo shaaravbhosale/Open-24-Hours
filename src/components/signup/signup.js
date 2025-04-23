@@ -9,19 +9,26 @@ import {
   IconButton,
   InputAdornment,
   Grid,
-  Alert
+  Alert,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './signup.scss';
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    role: 'student' // Default role
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -57,7 +64,8 @@ const Signup = () => {
           firstName: formData.firstName,
           lastName: formData.lastName,
           email: formData.email,
-          password: formData.password
+          password: formData.password,
+          role: formData.role
         }),
       });
 
@@ -65,14 +73,20 @@ const Signup = () => {
       setMessage(data.message);
       
       if (response.ok) {
-        // Clear form on successful signup
+        // Clear form with successful signup
         setFormData({
           firstName: '',
           lastName: '',
           email: '',
           password: '',
-          confirmPassword: ''
+          confirmPassword: '',
+          role: 'student'
         });
+        
+        // Redirect to login after successful signup
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000);
       }
     } catch (error) {
       setMessage('Error connecting to server');
@@ -208,6 +222,20 @@ const Signup = () => {
                     ),
                   }}
                 />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">I am a:</FormLabel>
+                  <RadioGroup 
+                    row 
+                    name="role" 
+                    value={formData.role} 
+                    onChange={handleChange}
+                  >
+                    <FormControlLabel value="student" control={<Radio />} label="Student" />
+                    <FormControlLabel value="tutor" control={<Radio />} label="Tutor" />
+                  </RadioGroup>
+                </FormControl>
               </Grid>
             </Grid>
 
